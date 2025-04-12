@@ -1,0 +1,27 @@
+1 vagrant up
+
+2 
+vagrant ssh master
+
+# No master VM:
+sudo kubeadm init --apiserver-advertise-address=192.168.56.10 --pod-network-cidr=10.244.0.0/16
+
+# Configura kubectl
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+# Aplica plugin de rede (Flannel)
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+
+3
+Copie o comando kubeadm join que aparece no final da saída do kubeadm init.
+
+4
+vagrant ssh worker1
+# cole o comando join aqui
+
+vagrant ssh worker2
+# cole o comando join aqui também
+
