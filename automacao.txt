@@ -1,3 +1,17 @@
+# Status atual
+
+CRi configurado corretamente na worker1 manualmente.
+COloquei as instrucoes no bootstrap.sh pra ver se faz na worker2, mas ainda nao testei.
+O kube adm join ainda não funcionou no worker1.
+Verificar os erros na VM master com esse comando: `sudo journalctl -p err`
+Há um erro de que nao foi possivel criar a pasta /vagrant, mas ela está criada na master.
+
+
+Verificar a possibilidade de nao executar o kubelet no startup da VM...
+
+
+-----------------------------
+
 1 vagrant up
 
 2 
