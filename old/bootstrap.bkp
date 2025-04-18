@@ -100,6 +100,3 @@ if hostname | grep -q master && [ ! -f /etc/kubernetes/admin.conf ]; then
   # Exibe comando de join
   kubeadm token create --print-join-command
 fi
-
-# Rodar o comando abaixo nas workers --> deu erro de containerd la tb...
-# kubeadm join 10.0.2.15:6443 --token jjfv82.boctvcipjslnx85f --discovery-token-ca-cert-hash sha256:10eabb059fff0e2944adcc1228538f6cb83b1577350bdf88663999b2dc7ad513

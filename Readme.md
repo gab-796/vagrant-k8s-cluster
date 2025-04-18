@@ -1,9 +1,8 @@
 # Criação das máquinas via vagrant
 
 ## Requisitos
-Desabilitar o Secure Boot na BIOS!
-
-Ter o Virtualbox 7.0 e o Vagrant mais atualizado possível.
+1. Desabilitar o Secure Boot na BIOS!
+2. Ter o Virtualbox 7.0 e o Vagrant mais atualizado possível.
 
 > Não instale a versão 7.1 pois o Vagrant não tem suporte pra ela.
 
@@ -22,6 +21,9 @@ Agora reinicie a máquina
 ## Início
 Dentro da pasta onde o arquivo vagrantfile está, execute `vagrant up`. Com isso será criadas as máquinas no VirtualBox conforme descrito no vagrantfile.
 
+Caso alguma VM dê ruim, vc pode executar ela com a falg de debug  
+`vagrant up worker1 --debug`
+
 Caso já tenha pro visionado as VMs, execute `vagrant provision` que será rodado o bootstrap.sh novamente.
 
 ### Desligando o PC
@@ -30,8 +32,9 @@ O vagrant precisa ser desligado com segurança, nos moldes do windows 98, e isso
 Ao reiniciar o PC, basta usar `vagrant up`, que equivalerá ao boot nas VMs.
 
 ### Acessando as VMs
-`vagrant ssh master` --> entra na VM Master
-`vagrant ssh worker1` e tb worker2
+`vagrant ssh master` --> entra na VM Master  
+`vagrant ssh worker1` --> entra na worker1  
+`vagrant ssh worker2` --> entra na worker2
 
 ### Destruindo as VMs
 `vagrant destroy -f`
@@ -46,17 +49,27 @@ Ao reiniciar o PC, basta usar `vagrant up`, que equivalerá ao boot nas VMs.
 3. Mostrando status geral das box instaladas
 `vagrant global-status`
 
-4. Parando VMs
+4. Desligando as VMs
 `vagrant  halt`
 
-5. Destruindo totalmente as VMs
+5. Para Hibernar as VMs
+`vagrant suspend`
+
+6. Destruindo totalmente as VMs
 `vagrant destroy`
 
-6. Quando alterar algo no bootstrap.sh execute isso
+7. Quando alterar algo no bootstrap.sh execute isso
 `vagrant provision`
 
-7. Obtendo log completo ao executar o provision
+8. Obtendo log completo ao executar o provision
 `vagrant provision master --debug`
+
+9. Obtendo o status atual das VMs
+`vagrant status`
+
+## Token gerado apos fazer o kubeadm init
+Sempre muda!  
+Ele fica armazenado no `join-command.sh`
 
 ## Troubleshooting do vagrant
 
@@ -73,12 +86,14 @@ sudo apt-get install -y kubelet=1.29.3-1.1 kubeadm=1.29.3-1.1 kubectl=1.29.3-1.1
 3. Verificação do tamanho das vagrant Box
 `du -sh ~/.vagrant.d/boxes/*/*/*`
 
-Por enquanto está assim:
+A saída será algo parecido a isso:
+```
 651M	/home/gabriel/.vagrant.d/boxes/bento-VAGRANTSLASH-ubuntu-24.04/202502.21.0/virtualbox
 1,1G	/home/gabriel/.vagrant.d/boxes/debian-VAGRANTSLASH-bullseye64/11.20241217.1/virtualbox
 750M	/home/gabriel/.vagrant.d/boxes/generic-VAGRANTSLASH-debian12/4.3.12/libvirt
 805M	/home/gabriel/.vagrant.d/boxes/generic-VAGRANTSLASH-debian12/4.3.12/virtualbox
 1,3G	/home/gabriel/.vagrant.d/boxes/generic-VAGRANTSLASH-fedora39/4.3.12/libvirt
 356M	/home/gabriel/.vagrant.d/boxes/ubuntu-VAGRANTSLASH-bionic64/20230607.0.5/virtualbox
+```
 
 

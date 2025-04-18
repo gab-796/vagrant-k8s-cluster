@@ -105,7 +105,7 @@ sudo systemctl start systemd-timesyncd
 # Master node
 # ----------------------------
 if hostname | grep -q master && [ ! -f /etc/kubernetes/admin.conf ]; then
-  sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --kubernetes-version=1.29.3
+  sudo kubeadm init --apiserver-advertise-address=192.168.56.10 --pod-network-cidr=10.244.0.0/16 --kubernetes-version=1.29.3
 
   # Configura acesso kubectl para o usuário vagrant
   mkdir -p $HOME/.kube
@@ -115,9 +115,14 @@ if hostname | grep -q master && [ ! -f /etc/kubernetes/admin.conf ]; then
   # Instala o CNI Flannel
   kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
 
-  # Gera e salva comando de join
-  kubeadm token create --print-join-command > ${JOIN_FILE}
+  MASTER_IP=$(ip -4 -o addr show eth1 | awk '{print $4}' | cut -d/ -f1)
+
+  JOIN_CMD=$(kubeadm token create --print-join-command)
+  JOIN_CMD=$(echo $JOIN_CMD | sed "s/[^ ]\+:6443/${MASTER_IP}:6443/")
+  
+  echo $JOIN_CMD > ${JOIN_FILE}
   chmod +x ${JOIN_FILE}
+
 fi
 
 # ----------------------------
